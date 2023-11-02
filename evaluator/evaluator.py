@@ -8,30 +8,45 @@ class Evaluator:
         ev.output = output
 
 
-
+    #
     def is_friday(ev):
-        return(True)
-
+        return True
+    
+    #
     def class_capacity(ev):
-        return (True)
+        return True
 
+    #
     def repeated_class(ev):
-        return (True)
+        return True
 
+    #
     def repeated_profesor(ev):
-        return (True)
+        return True
 
+    #
     def start_end(ev):
-        return (True)
-
+        return True
+    
+    #
     def unit_validation(ev):
-        return (True)
+        return True
 
+    #
     def class_time(ev):
-        return (True)
-
+        return True
+    
+    #
     def class_period(ev):
-        return (True)
+        return True
+
+    #
+    def objective_functio(ev):
+        error_logs = []
+        """
+        Other functions are called in this function
+        """
+        return error_logs
 
 
 
