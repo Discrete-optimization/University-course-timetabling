@@ -11,7 +11,7 @@ class Evaluator:
     #
     def is_friday(ev):
         return True
-    
+
     #
     def class_capacity(ev):
         return True
@@ -27,7 +27,7 @@ class Evaluator:
     #
     def start_end(ev):
         return True
-    
+
     #
     def unit_validation(ev):
         return True
@@ -35,7 +35,7 @@ class Evaluator:
     #
     def class_time(ev):
         return True
-    
+
     #
     def class_period(ev):
         return True
