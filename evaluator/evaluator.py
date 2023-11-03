@@ -10,6 +10,11 @@ class Evaluator:
 
     #
     def is_friday(ev):
+        friday_ids = []
+        for index, row in output_df.iterrows():
+            if row['day'] == 'Friday':
+                friday_ids.append(row['id'])
+        print(friday_ids)
         return True
 
     #
@@ -34,6 +39,9 @@ class Evaluator:
 
     #
     def class_time(ev):
+        output_df['class_length'] = pd.to_datetime(output_df['end']) - pd.to_datetime(output_df['start'])
+        two_hour_classes = output_df[(output_df['class_length'] != pd.Timedelta(hours=2))]['id'].tolist()
+        print(two_hour_classes)
         return True
 
     #
