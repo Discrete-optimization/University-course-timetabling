@@ -10,6 +10,11 @@ class Evaluator:
 
     #
     def is_friday(ev):
+        friday_ids = []
+        for index, row in output_df.iterrows():
+            if row['day'] == 'Friday':
+                friday_ids.append(row['id'])
+        print(friday_ids)
         return True
 
     #
