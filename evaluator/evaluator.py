@@ -21,9 +21,36 @@ class Evaluator:
     def class_capacity(ev):
         return True
 
-    #
+    #Create a dictionary to store class occurrences by day, time, and classroom
     def repeated_class(ev):
-        return True
+
+        class_occurrences = {}
+
+        for index, row in ev.output.iterrows():
+            day = row['day']
+            start_time = row['start']
+            end_time = row['end']
+            classroom_id = row['classroom_id']
+            class_id = row['id']
+
+            # Generate a unique key for each class occurrence based on day, time, and classroom
+            occurrence_key = (day, start_time, end_time, classroom_id)
+
+            if occurrence_key in class_occurrences:
+                # If it exists, add the class to the list of repeated classes
+                class_occurrences[occurrence_key].append(class_id)
+            else:
+                # If it doesn't exist, create a new list for the key
+                class_occurrences[occurrence_key] = [class_id]
+
+        repeated_classes = []
+
+        # Check for occurrences where more than one class has the same day, time, and classroom
+        for class_ids in class_occurrences.values():
+            if len(class_ids) > 1:
+                repeated_classes.extend(class_ids)
+
+        return repeated_classes
 
     #
     def repeated_profesor(ev):
