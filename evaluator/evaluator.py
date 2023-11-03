@@ -17,9 +17,11 @@ class Evaluator:
         print(friday_ids)
         return True
 
-    #
-    def class_capacity(ev):
-        return True
+    def class_capacity(self):
+        highest_capacity = self.classrooms['capacity'].max()
+        exceeded_capacity_classes = self.classes[self.classes['number_of_students'] > highest_capacity]['id']
+
+        return exceeded_capacity_classes.tolist()  # Return the list of class IDs
 
     #Create a dictionary to store class occurrences by day, time, and classroom
     def repeated_class(ev):
