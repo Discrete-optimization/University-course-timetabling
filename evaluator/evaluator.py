@@ -58,11 +58,25 @@ class Evaluator:
 
     #
     def start_end(ev):
-        return True
+        n = len(ev.output)
+        l = []
+        for i in range(n-1):
+            s = int(ev.output["start"].loc[i].replace(':', ""))
+            e = int(ev.output["end"].loc[i].replace(':', ""))
+            if(e <= s):
+                l.append(ev.output["id"].loc[i])
+
+        return l
 
     #
     def unit_validation(ev):
-        return True
+         n = len(ev.classes)
+        l = []
+        for i in range(n-1):
+            x = ev.classes["id"].loc[i]
+            if(len(ev.output.query("class_id == @x")) < ev.classes["units"].loc[i]):
+                l.append(x)
+        return l
 
     #
     def class_time(ev):
