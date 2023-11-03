@@ -39,6 +39,9 @@ class Evaluator:
 
     #
     def class_time(ev):
+        output_df['class_length'] = pd.to_datetime(output_df['end']) - pd.to_datetime(output_df['start'])
+        two_hour_classes = output_df[(output_df['class_length'] != pd.Timedelta(hours=2))]['id'].tolist()
+        print(two_hour_classes)
         return True
 
     #
