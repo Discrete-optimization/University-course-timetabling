@@ -46,7 +46,7 @@ class Random_answer_generator:
         time = self.randoom_time()
         
         #combine dataframes:
-        result = pd.concat([df1, df2, df3], axis=1, join='inner')
+        result = pd.concat([week_day, class_room, classes, time], axis=1, join='inner')
 
         return result
         
