@@ -27,6 +27,11 @@ class Random_answer_generator:
         
 
     def randoom_classroom(self):
+        classroom_types = ['Course', 'Lab', 'Seminar']
+        probabilities = [0.5, 0.3, 0.2]
+        classroom_type_arr = np.random.choice(classroom_types, size=self.answer_num, p=probabilities)
+        curr_df = pd.DataFrame({'type': classroom_type_arr})
+        
         return curr_df
 
 
