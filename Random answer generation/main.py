@@ -7,78 +7,77 @@ import os
 import openpyxl
 
 
-
 class Random_answer_generator:
     def __init__(self, answer_num):
         self.answer_num = answer_num
 
-    
     """
     It chooses the days of the week for classes randomly.
     Note that the probability of placing on Thursdays and Fridays is less than on other days.
     """
+
     def randoom_weekday(self):
         week_days = ['Saturday', 'Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday']
-        probabilities = [0.195, 0.19, 0.19, 0.19, 0.19, 0.04, 0.005] #The ratio of the number of classes per day of the week
-        arr = np.random.choice(week_days, size=self.answer_num, p=probabilities) #We create a random element according to the number of inputs
-        curr_df = pd.DataFrame(arr, columns=['Weekday']) #Convert list to dataframe
-        
+        probabilities = [0.195, 0.19, 0.19, 0.19, 0.19, 0.04,
+                         0.005]  # The ratio of the number of classes per day of the week
+        arr = np.random.choice(week_days, size=self.answer_num,
+                               p=probabilities)  # We create a random element according to the number of inputs
+        curr_df = pd.DataFrame(arr, columns=['Weekday'])  # Convert list to dataframe
+
         return curr_df
-        
 
     def randoom_classroom(self):
         classroom_types = ['Course', 'Lab', 'Seminar']
         probabilities = [0.5, 0.3, 0.2]
         classroom_type_arr = np.random.choice(classroom_types, size=self.answer_num, p=probabilities)
         curr_df = pd.DataFrame({'type': classroom_type_arr})
-        
-        return curr_df
 
+        return curr_df
 
     def randoom_class(self):
         class_id = []
         for i in range(29):
-            class_id.append(i+1)
-            
+            class_id.append(i + 1)
+
         # probability for each class is proportional to the number of its unit
-        probabilities = [0.029850746268656716, 0.04477611940298507, 0.05970149253731343, 0.04477611940298507, 0.014925373134328358, 0.029850746268656716, 0.029850746268656716, 0.029850746268656716, 0.029850746268656716, 0.05970149253731343,
-                         0.04477611940298507, 0.029850746268656716, 0.05970149253731343, 0.05970149253731343, 0.029850746268656716, 0.04477611940298507,
+        probabilities = [0.029850746268656716, 0.04477611940298507, 0.05970149253731343, 0.04477611940298507,
+                         0.014925373134328358, 0.029850746268656716, 0.029850746268656716, 0.029850746268656716,
+                         0.029850746268656716, 0.05970149253731343,
+                         0.04477611940298507, 0.029850746268656716, 0.05970149253731343, 0.05970149253731343,
+                         0.029850746268656716, 0.04477611940298507,
                          0.014925373134328358, 0.04477611940298507, 0.014925373134328358,
                          0.029850746268656716, 0.029850746268656716, 0.029850746268656716, 0.014925373134328358,
-                         0.014925373134328358, 0.029850746268656716, 0.014925373134328358, 0.05970149253731343, 0.04477611940298507, 0.014925373134328358]
-        
+                         0.014925373134328358, 0.029850746268656716, 0.014925373134328358, 0.05970149253731343,
+                         0.04477611940298507, 0.014925373134328358]
+
         arr = np.random.choice(class_id, size=self.answer_num, p=probabilities)
         curr_df = pd.DataFrame(arr, columns=['class_id'])  # Convert list to dataframe
         return curr_df
-        
 
     def random_times(self):
-        class_times = ['4:00', '5:00', '6:00', '7:00', '8:00', '9:00', '10:00', '11:00', '12:00', '13:00', '14:00',
-                       '15:00', '16:00', '17:00', '18:00', '19:00', '20:00', '21:00', '22:00', '23:00']
-        probabilities = [0.01, 0.03, 0.05, 0.05, 0.07, 0.06, 0.08, 0.065, 0.06, 0.06, 0.08, 0.06,
-                         0.085, 0.06, 0.05, 0.04, 0.035, 0.025, 0.01, 0.01] # Ratio of the number of classes per hour of the day
+        class_times = ['8:00', '10:00', '12:00', '14:00', '16:00', '18:00', '20:00']
+        probabilities = [0.1, 0.2, 0.2, 0.2, 0.2, 0.05, 0.05]  # Ratio of the number of classes per hour of the day
         arr = np.random.choice(class_times, size=self.answer_num, p=probabilities)
         curr_df = pd.DataFrame(arr, columns=['start'])
-        
+
         return curr_df
 
-
     def aggregator(self):
-        #call functions:
+        # call functions:
         week_day = self.randoom_weekday()
+        time = self.random_times()
         class_room = self.randoom_classroom()
         classes = self.randoom_class()
-        time = self.randoom_time()
-        
-        #combine dataframes:
+
+        # combine dataframes:
         result = pd.concat([week_day, class_room, classes, time], axis=1, join='inner')
 
         return result
-        
 
     def excel_creator(self):
         curr_df = self.aggregator()
-        curr_df.to_excel('out.xlsx', index=False)
+        curr_df.to_excel('answer.xlsx', index=False)
 
 
 RAG1 = Random_answer_generator(500)
+print(RAG1.aggregator())
