@@ -52,7 +52,14 @@ class Random_answer_generator:
         return curr_df
         
 
-    def randoom_time(self):
+    def random_times(self):
+        class_times = ['4:00', '5:00', '6:00', '7:00', '8:00', '9:00', '10:00', '11:00', '12:00', '13:00', '14:00',
+                       '15:00', '16:00', '17:00', '18:00', '19:00', '20:00', '21:00', '22:00', '23:00']
+        probabilities = [0.01, 0.03, 0.05, 0.05, 0.07, 0.06, 0.08, 0.065, 0.06, 0.06, 0.08, 0.06,
+                         0.085, 0.06, 0.05, 0.04, 0.035, 0.025, 0.01, 0.01] # Ratio of the number of classes per hour of the day
+        arr = np.random.choice(class_times, size=self.answer_num, p=probabilities)
+        curr_df = pd.DataFrame(arr, columns=['start'])
+        
         return curr_df
 
 
