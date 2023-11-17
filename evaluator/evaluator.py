@@ -1,4 +1,7 @@
 import pandas as pd
+from itertools import chain
+
+
 
 
 class Evaluator:
@@ -11,15 +14,15 @@ class Evaluator:
     #
     def is_friday(ev):
         friday_ids = []
-        for index, row in output_df.iterrows():
+        for index, row in ev.output.iterrows():
             if row['day'] == 'Friday':
                 friday_ids.append(row['id'])
-        print(friday_ids)
-        return True
 
-    def class_capacity(self):
-        highest_capacity = self.classrooms['capacity'].max()
-        exceeded_capacity_classes = self.classes[self.classes['number_of_students'] > highest_capacity]['id']
+        return friday_ids
+
+    def class_capacity(ev):
+        highest_capacity = ev.classrooms['capacity'].max()
+        exceeded_capacity_classes = ev.classes[ev.classes['number_of_students'] > highest_capacity]['id']
 
         return exceeded_capacity_classes.tolist()  # Return the list of class IDs
 
@@ -72,7 +75,7 @@ class Evaluator:
 
     #
     def unit_validation(ev):
-         n = len(ev.classes)
+        n = len(ev.classes)
         l = []
         for i in range(n-1):
             x = ev.classes["id"].loc[i]
@@ -80,10 +83,10 @@ class Evaluator:
                 l.append(x)
         return l
 
-    #
+    #Hanooz kar dare...
     def class_time(ev):
-        output_df['class_length'] = pd.to_datetime(output_df['end']) - pd.to_datetime(output_df['start'])
-        two_hour_classes = output_df[(output_df['class_length'] != pd.Timedelta(hours=2))]['id'].tolist()
+        ev.output['class_length'] = pd.to_datetime(ev.output['end']) - pd.to_datetime(ev.output['start'])
+        two_hour_classes = ev.output[(ev.output['class_length'] != pd.Timedelta(hours=2))]['id'].tolist()
         print(two_hour_classes)
         return True
 
@@ -97,7 +100,43 @@ class Evaluator:
         """
         Other functions are called in this function
         """
+        friday_log = ev.is_friday()
+        error_logs.append(friday_log)
+        capacity_log = ev.class_capacity()
+        error_logs.append(capacity_log)
+        repeated_log = ev.repeated_class()
+        error_logs.append(repeated_log)
+        sn_log = ev.start_end()
+        error_logs.append(sn_log)
+        unit_log = ev.unit_validation()
+        error_logs.append(unit_log)
+
+        error_logs = list(chain.from_iterable(error_logs))
+        error_logs = list(dict.fromkeys(error_logs))
+
         return error_logs
+
+    def progress_percent(ev):
+        total = ev.output.shape[0]
+        errors = len(ev.objective_functio())
+
+        return 100 * (errors/total)
+
+    def print_progress_percent(ev):
+
+        print("The degree of proximity to the desired answer:")
+
+
+        pro = ev.progress_percent()
+        visual = int(pro/2)
+        for i in range(1, 51):
+            if(i <= visual):
+                print("*", end="")
+            else:
+                print("-", end="")
+
+
+        print(" {}%".format(round(pro, 2)))
 
 
 
@@ -112,12 +151,8 @@ class Evaluator:
         return (ev.output)
 
 
-# Reading dataset:
-Classrooms_df = pd.read_csv('dataset/classrooms.csv')
-Class_df = pd.read_csv('dataset/class.csv')
-# reading output:
-output_df = pd.read_csv('project output/output.csv')
-
-# Call constructor:
-E1 = Evaluator(Classrooms_df, Class_df, output_df)
-print(E1.monitor_output())
+"""
+data = E1.objective_functio();
+df = pd.DataFrame(data)
+df.to_excel('out.xlsx', index=False)
+"""
